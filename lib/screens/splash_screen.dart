@@ -38,7 +38,9 @@ class _SplashScreenState extends State<SplashScreen> {
           )
         ),
         child: Center(
-          child: Image.asset("lib/assets/logo/logo.png", fit: BoxFit.cover, height: 300,),
+          child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(200),
+              child: Image.asset("lib/assets/logo/logo_starDust.png", fit: BoxFit.cover, height: 180,)),
         ),
       ),
     );
