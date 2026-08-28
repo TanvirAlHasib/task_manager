@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/screens/email_address_screen.dart';
+import 'package:task_manager/screens/signup_screen.dart';
 import 'package:task_manager/utils/colours.dart';
 
 import '../widgets/Text_form_field.dart';
@@ -112,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: TextDecoration.underline
                             ),
                             recognizer: TapGestureRecognizer()..onTap = (){
-                              // here will be another screen route
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => EmailAddressScreen(),));
                             }
                           )
                         ]
@@ -139,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontWeight: FontWeight.w600,
                                 ),
                                 recognizer: TapGestureRecognizer()..onTap = (){
-                                  // here will be another screen route
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen(),));
                                 }
                             )
                           ]
