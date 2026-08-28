@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/utils/colours.dart';
 
@@ -14,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController emailTextEditingController = TextEditingController();
   final TextEditingController passTextEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,44 +55,97 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Color(Colours.cardColor),
                   borderRadius: BorderRadius.circular(12)
                 ),
-                child: Column(
-                  children: [
-                    Text("Sign In", style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Color(Colours.fontColor)
-                    ),),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text_form_field(labelText: "Email", textInputType: TextInputType.emailAddress, textEditingController: emailTextEditingController,),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text_form_field(labelText: "password", textInputType: TextInputType.text, textEditingController: passTextEditingController,),
-                    const SizedBox(
-                      height: 35,
-                    ),
-                    FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Color(Colours.buttonColor),
-                        minimumSize: Size.fromHeight(55)
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Text("Sign In", style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Color(Colours.fontColor)
+                      ),),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      onPressed: () {
-
-                    }, child: Row(
-                      spacing: 8,
-                      crossAxisAlignment: .center,
-                      mainAxisAlignment: .center,
-                      children: [
-                        Text("Sign In", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.w600
-                        ),),
-                        Icon(Icons.arrow_forward_outlined, color: Colors.black87,)
-                      ],
-                    )),
-                    const SizedBox(
-                      height: 10,
-                    )
-                  ],
+                      Text_form_field(labelText: "Email", textInputType: TextInputType.emailAddress, textEditingController: emailTextEditingController,),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text_form_field(labelText: "password", textInputType: TextInputType.text, textEditingController: passTextEditingController,),
+                      const SizedBox(
+                        height: 35,
+                      ),
+                      FilledButton(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: Color(Colours.buttonColor),
+                          minimumSize: Size.fromHeight(55)
+                        ),
+                        onPressed: () {
+                          if(_formKey.currentState!.validate()){
+                            // another route will be here after authentication
+                          }
+                      }, child: Row(
+                        spacing: 8,
+                        crossAxisAlignment: .center,
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text("Sign In", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.w600
+                          ),),
+                          Icon(Icons.arrow_forward_outlined, color: Colors.black87,)
+                        ],
+                      )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      RichText(text: TextSpan(
+                        text: "Forget password ?",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Color(Colours.fontColor),
+                        ),
+                        children: [
+                          WidgetSpan(child: SizedBox(width: 5,)),
+                          TextSpan(
+                            text: "Click here..",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              decorationColor: Color(Colours.fontColor),
+                              decorationThickness: 1,
+                              decoration: TextDecoration.underline
+                            ),
+                            recognizer: TapGestureRecognizer()..onTap = (){
+                              // here will be another screen route
+                            }
+                          )
+                        ]
+                      )),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Text("or", style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Color(Colours.fontColor)
+                      ),),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      RichText(text: TextSpan(
+                          text: "Don't have account ?",
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Color(Colours.fontColor),
+                          ),
+                          children: [
+                            WidgetSpan(child: SizedBox(width: 5,)),
+                            TextSpan(
+                                text: "Sign up",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                ),
+                                recognizer: TapGestureRecognizer()..onTap = (){
+                                  // here will be another screen route
+                                }
+                            )
+                          ]
+                      )),
+                    ],
+                  ),
                 ),
               )
             ],
