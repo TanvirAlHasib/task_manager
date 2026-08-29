@@ -20,10 +20,10 @@ class _EmailAddressScreenState extends State<EmailAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(Colours.backGroundColor),
+      backgroundColor: Color(Colours.cardColor),
       appBar: myAppBar(),
       body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Form(
           key: _formKey,
           child: Column(
@@ -40,7 +40,13 @@ class _EmailAddressScreenState extends State<EmailAddressScreen> {
                 height: 5,
               ),
               Text_form_field(textEditingController: emailEditingController, labelText: "Email", textInputType: TextInputType.emailAddress),
+              const SizedBox(
+                height: 5,
+              ),
               FilledButtonWidget(formKey: _formKey, buttonText: "Send OTP",),
+              const SizedBox(
+                height: 1,
+              ),
               RichText(text: TextSpan(
                   text: "have account ?",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -69,11 +75,15 @@ class _EmailAddressScreenState extends State<EmailAddressScreen> {
   // app bar
   AppBar myAppBar(){
     return AppBar(
-      backgroundColor: Color(Colours.cardColor),
+      backgroundColor: Color(Colours.backGroundColor),
       elevation: 2,
+      automaticallyImplyLeading: false,
+      automaticallyImplyActions: false,
       centerTitle: true,
       title: Row(
-        spacing: 5,
+        spacing: 10,
+        mainAxisAlignment: .center,
+        crossAxisAlignment: .center,
         children: [
           ClipRRect(
               borderRadius: BorderRadiusGeometry.circular(40),
