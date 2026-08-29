@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager/screens/login_screen.dart';
 import 'package:task_manager/utils/colours.dart';
 import 'package:task_manager/widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
@@ -60,7 +59,7 @@ class _EmailAddressScreenState extends State<EmailAddressScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                         recognizer: TapGestureRecognizer()..onTap = (){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+                          Navigator.pop(context);
                         }
                     )
                   ]
