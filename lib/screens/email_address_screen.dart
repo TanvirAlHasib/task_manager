@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/screens/verification_screen.dart';
 import 'package:task_manager/utils/colours.dart';
 import 'package:task_manager/widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
@@ -42,7 +43,7 @@ class _EmailAddressScreenState extends State<EmailAddressScreen> {
               const SizedBox(
                 height: 5,
               ),
-              FilledButtonWidget(formKey: _formKey, buttonText: "Send OTP",),
+              FilledButtonWidget(formKey: _formKey, buttonText: "Send OTP",action: () => Navigator.push(context, MaterialPageRoute(builder: (context) => VerificationScreen(),)),),
               const SizedBox(
                 height: 1,
               ),
