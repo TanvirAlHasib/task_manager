@@ -16,6 +16,7 @@ class Text_form_field extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: Colors.white,
       controller: textEditingController,
       onTapOutside: (event) => FocusManager.instance.primaryFocus!.unfocus(),
       keyboardType: textInputType,
