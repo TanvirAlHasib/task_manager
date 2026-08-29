@@ -27,9 +27,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
           child: Column(
             children: [
               CircleAvatar(
-                maxRadius: 30,
+                maxRadius: 38,
                 backgroundColor: Color(Colours.backGroundColor),
-                child: Icon(Icons.email, color: Color(Colours.buttonColor),),
+                child: Icon(Icons.email, color: Color(Colours.buttonColor), size: 40,),
               ),
               const SizedBox(
                 height: 9,
