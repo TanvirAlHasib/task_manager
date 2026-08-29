@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/screens/email_address_screen.dart';
 import 'package:task_manager/screens/signup_screen.dart';
 import 'package:task_manager/utils/colours.dart';
+import 'package:task_manager/widgets/filledButtonWidget.dart';
 
 import '../widgets/Text_form_field.dart';
 
@@ -75,26 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 35,
                       ),
-                      FilledButton(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Color(Colours.buttonColor),
-                          minimumSize: Size.fromHeight(55)
-                        ),
-                        onPressed: () {
-                          if(_formKey.currentState!.validate()){
-                            // another route will be here after authentication
-                          }
-                      }, child: Row(
-                        spacing: 8,
-                        crossAxisAlignment: .center,
-                        mainAxisAlignment: .center,
-                        children: [
-                          Text("Sign In", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.w600
-                          ),),
-                          Icon(Icons.arrow_forward_outlined, color: Colors.black87,)
-                        ],
-                      )),
+                      FilledButtonWidget(formKey: _formKey, buttonText: "Sign in"),
                       const SizedBox(
                         height: 20,
                       ),
