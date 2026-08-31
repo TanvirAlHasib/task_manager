@@ -1,8 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/screens/login_screen.dart';
-import 'package:task_manager/screens/verification_screen.dart';
 import 'package:task_manager/utils/validatorName.dart';
+import 'package:task_manager/widgets/toast.dart';
 import '../utils/colours.dart';
 import '../widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
@@ -47,10 +46,15 @@ class _SetPassScreenState extends State<SetPassScreen> {
               const SizedBox(
                 height: 5,
               ),
-              FilledButtonWidget(formKey: _formKey, buttonText: "Confirm",action: () => Navigator.pushAndRemoveUntil(
-                context, MaterialPageRoute(builder: (context) => LoginScreen(),),
-                (route) => false,
-              ),),
+              FilledButtonWidget(formKey: _formKey, buttonText: "Confirm",action: () {
+                if(passEditingController.text == confirmPassEditingController.text){
+                  // navigate to login page
+                  Navigator.pushAndRemoveUntil(
+                    context, MaterialPageRoute(builder: (context) => LoginScreen(),), (route) => false,
+                  );
+                }
+                Toast.show(message: "Password did not match", context: context);
+              },),
               const SizedBox(
                 height: 1,
               ),
