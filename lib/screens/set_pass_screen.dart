@@ -52,6 +52,7 @@ class _SetPassScreenState extends State<SetPassScreen> {
                   Navigator.pushAndRemoveUntil(
                     context, MaterialPageRoute(builder: (context) => LoginScreen(),), (route) => false,
                   );
+                  Toast.show(message: "Password set successful", context: context);
                 }
                 Toast.show(message: "Password did not match", context: context);
               },),
