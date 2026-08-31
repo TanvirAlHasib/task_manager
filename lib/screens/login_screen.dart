@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/screens/email_address_screen.dart';
 import 'package:task_manager/screens/signup_screen.dart';
 import 'package:task_manager/utils/colours.dart';
+import 'package:task_manager/utils/validatorName.dart';
 import 'package:task_manager/widgets/filledButtonWidget.dart';
 
 import '../widgets/Text_form_field.dart';
@@ -68,11 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Text_form_field(labelText: "Email", textInputType: TextInputType.emailAddress, textEditingController: emailTextEditingController,),
+                      Text_form_field(labelText: "Email", textInputType: TextInputType.emailAddress, textEditingController: emailTextEditingController, validationFor: Validatorname.email,),
                       const SizedBox(
                         height: 15,
                       ),
-                      Text_form_field(labelText: "password", textInputType: TextInputType.text, textEditingController: passTextEditingController,),
+                      Text_form_field(labelText: "password", textInputType: TextInputType.text, textEditingController: passTextEditingController, validationFor: Validatorname.pass,),
                       const SizedBox(
                         height: 35,
                       ),

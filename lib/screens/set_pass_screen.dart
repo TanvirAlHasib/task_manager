@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/screens/login_screen.dart';
 import 'package:task_manager/screens/verification_screen.dart';
+import 'package:task_manager/utils/validatorName.dart';
 import '../utils/colours.dart';
 import '../widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
@@ -41,8 +42,8 @@ class _SetPassScreenState extends State<SetPassScreen> {
               const SizedBox(
                 height: 5,
               ),
-              Text_form_field(textEditingController: passEditingController, labelText: "password", textInputType: TextInputType.visiblePassword),
-              Text_form_field(textEditingController: confirmPassEditingController, labelText: "confirm password", textInputType: TextInputType.visiblePassword),
+              Text_form_field(textEditingController: passEditingController, labelText: "password", textInputType: TextInputType.visiblePassword, validationFor: Validatorname.pass,),
+              Text_form_field(textEditingController: confirmPassEditingController, labelText: "confirm password", textInputType: TextInputType.visiblePassword, validationFor: Validatorname.pass,),
               const SizedBox(
                 height: 5,
               ),

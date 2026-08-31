@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/screens/verification_screen.dart';
 import 'package:task_manager/utils/colours.dart';
+import 'package:task_manager/utils/validatorName.dart';
 import 'package:task_manager/widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
 
@@ -39,7 +40,7 @@ class _EmailAddressScreenState extends State<EmailAddressScreen> {
               const SizedBox(
                 height: 5,
               ),
-              Text_form_field(textEditingController: emailEditingController, labelText: "Email", textInputType: TextInputType.emailAddress),
+              Text_form_field(textEditingController: emailEditingController, labelText: "Email", textInputType: TextInputType.emailAddress, validationFor: Validatorname.email,),
               const SizedBox(
                 height: 5,
               ),

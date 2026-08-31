@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/utils/validatorName.dart';
 import '../utils/colours.dart';
 
 class Text_form_field extends StatelessWidget {
@@ -6,12 +7,14 @@ class Text_form_field extends StatelessWidget {
     super.key,
     required this.textEditingController,
     required this.labelText,
-    required this.textInputType
+    required this.textInputType,
+    required this.validationFor
   });
 
   final String labelText;
   final TextEditingController textEditingController;
   final TextInputType textInputType;
+  final String validationFor;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +48,27 @@ class Text_form_field extends StatelessWidget {
       ),
       validator: (value) {
         if(value == null || value.isEmpty){
-          return "can not be empty";
+          return "Field can not be empty";
+        }
+        if(validationFor.contains(Validatorname.email)){
+          RegExp regExp = RegExp(r"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+");
+          if(!regExp.hasMatch(value)){
+            return "Enter valid email address";
+          }
+        } else if(validationFor.contains(Validatorname.pass)){
+          RegExp regExp = RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$");
+          if(!regExp.hasMatch(value)){
+            return "Enter strong password";
+          }
+        } else if(validationFor.contains(Validatorname.otp)){
+          if(value.length < 6){
+            return "OTP should be 6 digit long";
+          }
+        } else if(validationFor.contains(Validatorname.mobile)){
+          RegExp regExp = RegExp(r"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
+          if(!regExp.hasMatch(value)){
+            return "Enter valid phone number";
+          }
         }
         return null;
       },

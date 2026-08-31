@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/screens/set_pass_screen.dart';
+import 'package:task_manager/utils/validatorName.dart';
 import '../utils/colours.dart';
 import '../widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
@@ -41,7 +42,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Text_form_field(textEditingController: pinEditingController, labelText: "Enter 6 digits pin..", textInputType: TextInputType.number),
+              Text_form_field(textEditingController: pinEditingController, labelText: "Enter 6 digits pin..", textInputType: TextInputType.number, validationFor: Validatorname.otp,),
               Row(
                 children: [
                   Spacer(),
