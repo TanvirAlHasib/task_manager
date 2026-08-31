@@ -61,8 +61,9 @@ class Text_form_field extends StatelessWidget {
             return "Enter strong password";
           }
         } else if(validationFor.contains(Validatorname.otp)){
-          if(value.length < 6){
-            return "OTP should be 6 digit long";
+          RegExp regExp = RegExp(r"^\d{6}$");
+          if(!regExp.hasMatch(value)){
+            return "OTP is not valid";
           }
         } else if(validationFor.contains(Validatorname.mobile)){
           RegExp regExp = RegExp(r"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
