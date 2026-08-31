@@ -71,7 +71,7 @@ class Text_form_field extends StatelessWidget {
             return "Enter valid phone number";
           }
         } else if(validationFor.contains(Validatorname.name)){
-          RegExp regExp = RegExp(r"^[A-Za-z]+(?:\s[A-Za-z]+)*$");
+          RegExp regExp = RegExp(r"^[A-Za-z]+(?:\s[A-Za-z]+)*$", unicode: true);
           if(!regExp.hasMatch(value)){
             return "Enter valid name";
           }
