@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/screens/set_pass_screen.dart';
 import '../utils/colours.dart';
 import '../widgets/Text_form_field.dart';
 import '../widgets/filledButtonWidget.dart';
@@ -57,7 +58,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               const SizedBox(
                 height: 5,
               ),
-              FilledButtonWidget(formKey: _formKey, buttonText: "Verify",),
+              FilledButtonWidget(formKey: _formKey, buttonText: "Verify", action: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SetPassScreen(),)),),
             ],
           ),
         ),
