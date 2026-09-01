@@ -26,8 +26,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         spacing: 8,
         children: [
           ClipRRect(
-              borderRadius: BorderRadiusGeometry.circular(50),
-              child: Image.asset("lib/assets/logo/logo_starDust.png", height: 48,)
+            borderRadius: BorderRadiusGeometry.circular(50),
+            child: Image.asset("lib/assets/logo/logo_starDust.png", height: 48,)
           ),
           Column(
             mainAxisAlignment:.center,
@@ -45,9 +45,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
       actions: [
-        Icon(Icons.notifications, color: Color(Colours.fontColor),)
+        IconButton(onPressed: () {  }, icon: Icon(Icons.notifications, color: Color(Colours.fontColor)),)
       ],
-      actionsPadding: const EdgeInsets.only(right: 13),
+      actionsPadding: const EdgeInsets.only(right: 2),
     );
   }
 }
