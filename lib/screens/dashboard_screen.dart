@@ -14,6 +14,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       backgroundColor: Color(Colours.cardColor),
       appBar: myAppBar(),
+      body: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: .start,
+          children: [
+            Text("Overview", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              color: Color(Colours.fontColor),
+              fontWeight: FontWeight.w600
+            ),),
+            const SizedBox(
+              height: 12,
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                spacing: 9,
+                children: [
+                  TaskStatus(icon: Icons.note_alt, status: "New(12)",),
+                  TaskStatus(icon: Icons.cached, status: "In Progress(3)",),
+                  TaskStatus(icon: Icons.cancel_presentation, status: "Canceled(2)",),
+                  TaskStatus(icon: Icons.task_alt, status: "Completed(20)",),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -48,6 +75,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
         IconButton(onPressed: () {  }, icon: Icon(Icons.notifications, color: Color(Colours.fontColor)),)
       ],
       actionsPadding: const EdgeInsets.only(right: 2),
+    );
+  }
+}
+
+// task status widget
+class TaskStatus extends StatelessWidget {
+  const new({
+    super.key,
+    required this.status,
+    required this.icon
+  });
+
+  final String status;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () { },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+        decoration: BoxDecoration(
+          color: Color(Colours.backGroundColor),
+          borderRadius: BorderRadiusGeometry.circular(12),
+          border: BoxBorder.all(
+            color: Colors.grey.shade600,
+            strokeAlign: BorderSide.strokeAlignOutside,
+            width: 1
+          ),
+        ),
+        child: Row(
+          spacing: 5,
+          mainAxisSize: .min,
+          children: [
+            Icon(icon, color: Color(Colours.secondaryFontColor), size: 18,),
+            Text(status, style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Color(Colours.secondaryFontColor)
+            ),)
+          ],
+        ),
+      ),
     );
   }
 }
