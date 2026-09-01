@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:task_manager/screens/dashboard_screen.dart';
 import 'package:task_manager/screens/email_address_screen.dart';
 import 'package:task_manager/screens/signup_screen.dart';
 import 'package:task_manager/utils/colours.dart';
@@ -77,7 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 35,
                       ),
-                      FilledButtonWidget(formKey: _formKey, buttonText: "Sign in"),
+                      FilledButtonWidget(formKey: _formKey, buttonText: "Sign in", action: () {
+                        if(_formKey.currentState!.validate()){
+                          // api actions then routing
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
+                        }
+                      },),
                       const SizedBox(
                         height: 20,
                       ),
