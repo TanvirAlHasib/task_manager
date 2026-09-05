@@ -75,6 +75,11 @@ class Text_form_field extends StatelessWidget {
           if(!regExp.hasMatch(value)){
             return "Enter valid name";
           }
+        } else if(validationFor.contains(Validatorname.description)){
+          RegExp regExp = RegExp(r"^.{10,500}$", unicode: true);
+          if(!regExp.hasMatch(value)){
+            return "Enter valid description";
+          }
         }
 
         return null;
