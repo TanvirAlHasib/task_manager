@@ -8,17 +8,20 @@ class Text_form_field extends StatelessWidget {
     required this.textEditingController,
     required this.labelText,
     required this.textInputType,
-    required this.validationFor
+    required this.validationFor,
+    this.maxLines
   });
 
   final String labelText;
   final TextEditingController textEditingController;
   final TextInputType textInputType;
   final String validationFor;
+  final int ? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
       cursorColor: Colors.white,
       controller: textEditingController,
       onTapOutside: (event) => FocusManager.instance.primaryFocus!.unfocus(),
