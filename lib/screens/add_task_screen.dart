@@ -15,7 +15,7 @@ class AddTaskScreen extends StatefulWidget {
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final TextEditingController titleEditingController = TextEditingController();
   final TextEditingController descriptionEditingController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +24,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       body: Container(
         padding: const EdgeInsets.only(bottom: 15, left: 20, right: 20, top: 20),
         child: Form(
+          key: _formKey,
           child: Column(
             crossAxisAlignment: .start,
             children: [
@@ -52,7 +53,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(
                 height: 30,
               ),
-              FilledButtonWidget(formKey: formKey, buttonText: "Create Task", action: () {
+              FilledButtonWidget(formKey: _formKey, buttonText: "Create Task", action: () {
                 // Api action here
                 Navigator.pop(context);
               },),
