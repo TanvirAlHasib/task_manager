@@ -61,9 +61,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             const SizedBox(
               height: 17,
             ),
-            Text("Active Tasks", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+            Text("Your Tasks", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: Color(Colours.fontColor),
-              fontSize: 21,
               fontWeight: FontWeight.w600
             ),),
             const SizedBox(
@@ -140,6 +139,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         ),
       ),
+
+      floatingActionButton: FloatingActionButton(onPressed: () {
+
+      }, 
+        backgroundColor: Color(Colours.buttonColor),
+        child: Icon(Icons.add_task, color: Colors.black,),
+      ),
+
     );
   }
 
