@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/screens/add_task_screen.dart';
 import 'package:task_manager/utils/colours.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -141,7 +142,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(onPressed: () {
-
+        // go to the add new task screen
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
       }, 
         backgroundColor: Color(Colours.buttonColor),
         child: Icon(Icons.add_task, color: Colors.black,),
