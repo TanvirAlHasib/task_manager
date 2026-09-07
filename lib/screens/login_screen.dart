@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:task_manager/api/ApiInstance.dart';
+import 'package:task_manager/controllers/authController.dart';
 import 'package:task_manager/screens/dashboard_screen.dart';
 import 'package:task_manager/screens/email_address_screen.dart';
 import 'package:task_manager/screens/signup_screen.dart';
@@ -84,11 +86,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       FilledButtonWidget(formKey: _formKey, buttonText: "Sign in", action: () async{
                         if(_formKey.currentState!.validate()){
+                          //getting response
                           Response response = await ApiInstance.postData(Urls.loginUrl, {
                             "email": emailTextEditingController.text,
                             "password": passTextEditingController.text
                           });
+
                           if (response.statusCode == 200 || response.statusCode == 201) {
+                            final data = jsonDecode(response.body);
+                            await AuthController.saveUserData(data["token"], data["data"]);
                             Toast.show(message: "Log in successful", context: context);
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
                           } else {
