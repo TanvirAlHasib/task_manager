@@ -1,6 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:task_manager/api/ApiInstance.dart';
+import 'package:task_manager/models/task_model.dart';
 import 'package:task_manager/screens/add_task_screen.dart';
 import 'package:task_manager/utils/colours.dart';
+import 'package:task_manager/utils/urls.dart';
+import 'package:task_manager/widgets/toast.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -10,6 +16,29 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final List<Data> taskList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getTaskByStatus("New");
+  }
+
+  Future<void> getTaskByStatus(String status) async{
+    Response response = await ApiInstance.getData(Urls.listTaskByStatus(status));
+    if(response.statusCode == 200 || response.statusCode == 201){
+      final mapResponse = jsonDecode(response.body);
+      taskList.clear();
+      for(Map<String, dynamic> data in mapResponse["data"]){
+        taskList.add(Data.fromJson(data));
+      }
+    } else {
+      print(taskList);
+      Toast.show(message: "Error fetching task!!", context: context);
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,72 +99,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 17,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 7,
+              child: taskList.isEmpty ? Center(
+                child: Text("No data yet!!", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Color(Colours.fontColor),
+                  fontWeight: FontWeight.w600
+                ),),
+              ) : ListView.builder(
+                itemCount: taskList.length,
                 itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 25),
-                  decoration:BoxDecoration(
-                      color: Color(Colours.backGroundColor),
-                      borderRadius: BorderRadiusGeometry.circular(15)
-                  ),
-                  child: Column(
-                    crossAxisAlignment: .start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: .spaceBetween,
-                        children: [
-                          Text("Title", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                              color: Color(Colours.fontColor),
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600
-                          ),),
-                          TaskStatus(
-                            status: "In Progress",
-                            icon: Icons.cached,
-                            backGroundColor: Color(Colours.statusProgressBackGroundColor),
-                            foreGroundColor: Color(Colours.statusProgressForeGroundColor),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Text(
-                        "Re-align communication arrays on sector 7 to ensure optimal data throughput with don't know what",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Color(Colours.secondaryFontColor)
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 25),
+                    decoration:BoxDecoration(
+                        color: Color(Colours.backGroundColor),
+                        borderRadius: BorderRadiusGeometry.circular(15)
+                    ),
+                    child: Column(
+                      crossAxisAlignment: .start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: .spaceBetween,
+                          children: [
+                            Text(taskList[index].title!, style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                color: Color(Colours.fontColor),
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600
+                            ),),
+                            TaskStatus(
+                              status: taskList[index].status!,
+                              icon: Icons.cached,
+                              backGroundColor: Color(Colours.statusProgressBackGroundColor),
+                              foreGroundColor: Color(Colours.statusProgressForeGroundColor),
+                            )
+                          ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: .spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () { },
-                            style: IconButton.styleFrom(
-                              foregroundColor: Colors.red.shade900
-                            ),
-                            icon: Icon(Icons.delete)
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          taskList[index].description!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Color(Colours.secondaryFontColor)
                           ),
-                          IconButton(
-                            onPressed: () { },
-                            style: IconButton.styleFrom(
-                              foregroundColor: Colors.green.shade900
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: .spaceBetween,
+                          children: [
+                            IconButton(
+                                onPressed: () { },
+                                style: IconButton.styleFrom(
+                                    foregroundColor: Colors.red.shade900
+                                ),
+                                icon: Icon(Icons.delete)
                             ),
-                            icon: Icon(Icons.edit)
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },),
+                            IconButton(
+                                onPressed: () { },
+                                style: IconButton.styleFrom(
+                                    foregroundColor: Colors.green.shade900
+                                ),
+                                icon: Icon(Icons.edit)
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },),
             )
           ],
         ),
