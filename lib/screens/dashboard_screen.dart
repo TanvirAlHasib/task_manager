@@ -16,8 +16,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final List<Data> taskList = [];
-  late Future taskQuery;
+  late Future<List<Data>> taskQuery;
 
   @override
   void initState() {
@@ -25,19 +24,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
     taskQuery = getTaskByStatus("New");
   }
 
-  Future<void> getTaskByStatus(String status) async{
+  Future<List<Data>> getTaskByStatus(String status) async{
     Response response = await ApiInstance.getData(Urls.listTaskByStatus(status));
+    final List<Data> tasks = [];
     if(response.statusCode == 200 || response.statusCode == 201){
       final mapResponse = jsonDecode(response.body);
-      taskList.clear();
       for(Map<String, dynamic> data in mapResponse["data"]){
-        taskList.add(Data.fromJson(data));
+        tasks.add(Data.fromJson(data));
       }
-    } else {
-      print(taskList);
+    } else if(response.statusCode == 429){
+      Toast.show(message: "Too many request wait a little bit!!", context: context);
+    }else {
       Toast.show(message: "Error fetching task!!", context: context);
     }
-    setState(() {});
+    return tasks;
   }
 
   @override
@@ -125,6 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 }
 
                 // if data is available
+                final taskList = snapshot.data!;
                 return ListView.builder(
                   itemCount: taskList.length,
                   itemBuilder: (context, index) {
