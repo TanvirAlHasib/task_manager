@@ -17,11 +17,12 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final List<Data> taskList = [];
+  late Future taskQuery;
 
   @override
   void initState() {
     super.initState();
-    getTaskByStatus("New");
+    taskQuery = getTaskByStatus("New");
   }
 
   Future<void> getTaskByStatus(String status) async{
@@ -99,77 +100,98 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 17,
             ),
             Expanded(
-              child: taskList.isEmpty ? Center(
-                child: Text("No data yet!!", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  color: Color(Colours.fontColor),
-                  fontWeight: FontWeight.w600
-                ),),
-              ) : ListView.builder(
-                itemCount: taskList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 25),
-                    decoration:BoxDecoration(
-                        color: Color(Colours.backGroundColor),
-                        borderRadius: BorderRadiusGeometry.circular(15)
-                    ),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: .spaceBetween,
-                          children: [
-                            Text(taskList[index].title!, style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                color: Color(Colours.fontColor),
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600
-                            ),),
-                            TaskStatus(
-                              status: taskList[index].status!,
-                              icon: Icons.cached,
-                              backGroundColor: Color(Colours.statusProgressBackGroundColor),
-                              foreGroundColor: Color(Colours.statusProgressForeGroundColor),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Text(
-                          taskList[index].description!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Color(Colours.secondaryFontColor)
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: .spaceBetween,
-                          children: [
-                            IconButton(
-                                onPressed: () { },
-                                style: IconButton.styleFrom(
-                                    foregroundColor: Colors.red.shade900
-                                ),
-                                icon: Icon(Icons.delete)
-                            ),
-                            IconButton(
-                                onPressed: () { },
-                                style: IconButton.styleFrom(
-                                    foregroundColor: Colors.green.shade900
-                                ),
-                                icon: Icon(Icons.edit)
-                            ),
-                          ],
-                        )
-                      ],
+              child: FutureBuilder(future: taskQuery, builder: (context, snapshot) {
+
+                // if data is loading
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(
+                    child: CircularProgressIndicator.adaptive(
+                      valueColor: AlwaysStoppedAnimation(Color(Colours.buttonColor)),
+                      backgroundColor: Color(Colours.backGroundColor),
+                      strokeWidth: 3,
+                      strokeAlign: 2,
                     ),
                   );
-                },),
+                }
+
+                // if there is no data or empty
+                if(!snapshot.hasData || snapshot.data!.isEmpty){
+                  return Center(
+                      child: Text("No data yet!!", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                          color: Color(Colours.fontColor),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600
+                      ),),);
+                }
+
+                // if data is available
+                return ListView.builder(
+                  itemCount: taskList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 25),
+                      decoration:BoxDecoration(
+                          color: Color(Colours.backGroundColor),
+                          borderRadius: BorderRadiusGeometry.circular(15)
+                      ),
+                      child: Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: .spaceBetween,
+                            children: [
+                              Text(taskList[index].title!, style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                  color: Color(Colours.fontColor),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600
+                              ),),
+                              TaskStatus(
+                                status: taskList[index].status!,
+                                icon: Icons.cached,
+                                backGroundColor: Color(Colours.statusProgressBackGroundColor),
+                                foreGroundColor: Color(Colours.statusProgressForeGroundColor),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Text(
+                            taskList[index].description!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                color: Color(Colours.secondaryFontColor)
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: .spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () { },
+                                  style: IconButton.styleFrom(
+                                      foregroundColor: Colors.red.shade900
+                                  ),
+                                  icon: Icon(Icons.delete)
+                              ),
+                              IconButton(
+                                  onPressed: () { },
+                                  style: IconButton.styleFrom(
+                                      foregroundColor: Colors.green.shade900
+                                  ),
+                                  icon: Icon(Icons.edit)
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  },);
+              },)
             )
           ],
         ),
