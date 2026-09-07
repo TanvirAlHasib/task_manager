@@ -1,11 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:task_manager/api/ApiInstance.dart';
 import 'package:task_manager/screens/dashboard_screen.dart';
 import 'package:task_manager/screens/email_address_screen.dart';
 import 'package:task_manager/screens/signup_screen.dart';
 import 'package:task_manager/utils/colours.dart';
+import 'package:task_manager/utils/urls.dart';
 import 'package:task_manager/utils/validatorName.dart';
 import 'package:task_manager/widgets/filledButtonWidget.dart';
+import 'package:task_manager/widgets/toast.dart';
 
 import '../widgets/Text_form_field.dart';
 
@@ -78,10 +82,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 35,
                       ),
-                      FilledButtonWidget(formKey: _formKey, buttonText: "Sign in", action: () {
+                      FilledButtonWidget(formKey: _formKey, buttonText: "Sign in", action: () async{
                         if(_formKey.currentState!.validate()){
-                          // api actions then routing
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
+                          Response response = await ApiInstance.postData(Urls.loginUrl, {
+                            "email": emailTextEditingController.text,
+                            "password": passTextEditingController.text
+                          });
+                          if (response.statusCode == 200 || response.statusCode == 201) {
+                            Toast.show(message: "Log in successful", context: context);
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
+                          } else {
+                            Toast.show(message: "Log in unsuccessful!!", context: context);
+                          }
                         }
                       },),
                       const SizedBox(
