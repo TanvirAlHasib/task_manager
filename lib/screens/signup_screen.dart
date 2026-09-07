@@ -1,5 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:task_manager/api/ApiInstance.dart';
+import 'package:task_manager/utils/urls.dart';
+import 'package:task_manager/widgets/toast.dart';
 import '../utils/colours.dart';
 import '../utils/validatorName.dart';
 import '../widgets/Text_form_field.dart';
@@ -95,9 +99,21 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    FilledButtonWidget(formKey: _formKey, buttonText: "Create Account", action: () {
+                    FilledButtonWidget(formKey: _formKey, buttonText: "Create Account", action: () async{
                       // action will be here
-                      Navigator.pop(context);
+                      Response response = await ApiInstance.postData(Urls.registrationUrl, {
+                        "email": emailTextEditingController.text,
+                        "firstName": firstNameTextEditingController.text,
+                        "lastName": lastNameTextEditingController.text,
+                        "mobile": phoneTextEditingController.text,
+                        "password": passTextEditingController.text
+                      });
+                      if(response.statusCode == 200 || response.statusCode == 201){
+                        Navigator.pop(context);
+                        Toast.show(message: "Account creation successful!", context: context);
+                      } else {
+                        Toast.show(message: "Account creation failed!", context: context);
+                      }
                     },),
                     const SizedBox(
                       height: 20,
