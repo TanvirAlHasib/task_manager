@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/screens/dashboard_screen.dart';
 import 'package:task_manager/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,8 +19,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future loadNextScreen() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString("token") ?? "";
     await Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+      if(token.isEmpty){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
+      }
     },);
   }
 
