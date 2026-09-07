@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/controllers/authController.dart';
 import 'package:task_manager/screens/dashboard_screen.dart';
 import 'package:task_manager/screens/login_screen.dart';
 
@@ -21,6 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future loadNextScreen() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     String token = pref.getString("token") ?? "";
+    // when app closes the userToken become null in authController
+    // so we have to get the token and store it in userToken for further api operation
+    AuthController.userToken = token;
     await Future.delayed(Duration(seconds: 3), () {
       if(token.isEmpty){
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
