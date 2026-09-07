@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:task_manager/api/ApiInstance.dart';
+import 'package:task_manager/utils/urls.dart';
 import 'package:task_manager/utils/validatorName.dart';
 import 'package:task_manager/widgets/Text_form_field.dart';
 import 'package:task_manager/widgets/filledButtonWidget.dart';
-
+import 'package:task_manager/widgets/toast.dart';
 import '../utils/colours.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -53,9 +56,18 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(
                 height: 30,
               ),
-              FilledButtonWidget(formKey: _formKey, buttonText: "Create Task", action: () {
-                // Api action here
-                Navigator.pop(context);
+              FilledButtonWidget(formKey: _formKey, buttonText: "Create Task", action: () async{
+                Response response = await ApiInstance.postData(Urls.createTaskUrl, {
+                  "title": titleEditingController.text,
+                  "description": descriptionEditingController.text,
+                  "status": "New"
+                });
+                if(response.statusCode == 200 || response.statusCode == 201){
+                  Toast.show(message: "Task creation successfully", context: context);
+                  Navigator.pop(context);
+                } else{
+                  Toast.show(message: "Task creation failed", context: context);
+                }
               },),
               Spacer(flex: 3,)
             ],

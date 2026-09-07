@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
+import 'package:task_manager/controllers/authController.dart';
 
 class ApiInstance {
   //get request is here
@@ -11,6 +11,7 @@ class ApiInstance {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "token" : AuthController.userToken ?? "",
       }
     );
     return response;
@@ -24,6 +25,7 @@ class ApiInstance {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "token" : AuthController.userToken ?? "",
       }
     );
     return response;
