@@ -173,7 +173,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             mainAxisAlignment: .spaceBetween,
                             children: [
                               IconButton(
-                                  onPressed: () { },
+                                  onPressed: () {
+                                    if(mounted){
+                                      getPopUp(context, taskList, index);
+                                    }
+                                  },
                                   style: IconButton.styleFrom(
                                       foregroundColor: Colors.red.shade900
                                   ),
@@ -246,6 +250,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ],
       actionsPadding: const EdgeInsets.only(right: 2),
     );
+  }
+
+  // show dialog
+  void getPopUp(BuildContext context, List<Data> taskList, int index){
+    showDialog(context: context, barrierDismissible: true, builder: (context) {
+      return AlertDialog.adaptive(
+        title: Text("Delete!!", style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            color: Colors.red.shade900,
+            fontWeight: FontWeight.w600
+        ),),
+        backgroundColor: Color(Colours.backGroundColor),
+        content: Text("Do you want to delete the task?", style: Theme.of(context).textTheme.bodySmall!.copyWith(
+          color: Color(Colours.secondaryFontColor),
+        ),),
+        actions: [
+          TextButton(onPressed: () async {
+            Response response = await ApiInstance.getData(Urls.deleteTask(taskList[index].sId!));
+            if(response.statusCode == 200){
+              setState(() {
+                taskQuery = getTaskByStatus("New");
+              });
+              Toast.show(message: "Delete successfully!!", context: context);
+            } else{
+              Toast.show(message: "Delete unsuccessful!!", context: context);
+            }
+            Navigator.pop(context);
+          }, child: Text("Yes", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Color(Colours.fontColor),
+          ),)),
+
+          TextButton(onPressed: () {
+            Navigator.pop(context);
+          }, child: Text("No", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Color(Colours.fontColor),
+          ),)),
+        ],
+      );
+    },);
   }
 }
 
