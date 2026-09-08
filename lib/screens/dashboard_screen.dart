@@ -175,7 +175,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               IconButton(
                                   onPressed: () {
                                     if(mounted){
-                                      getPopUp(context, taskList, index);
+                                      getPopUp(
+                                        context: context,
+                                        title: "Delete!!",
+                                        content: "Do you want to delete the task ??",
+                                        failToast: "Delete unsuccessful!!",
+                                        successToast: "Delete successful!!",
+                                        action: () async => await ApiInstance.getData(Urls.deleteTask(taskList[index].sId!)),
+                                      );
                                     }
                                   },
                                   style: IconButton.styleFrom(
@@ -184,9 +191,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   icon: Icon(Icons.delete)
                               ),
                               IconButton(
-                                  onPressed: () { },
+                                  onPressed: () {},
                                   style: IconButton.styleFrom(
-                                      foregroundColor: Colors.green.shade900
+                                      foregroundColor: Colors.green.shade800
                                   ),
                                   icon: Icon(Icons.edit)
                               ),
@@ -253,27 +260,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // show dialog
-  void getPopUp(BuildContext context, List<Data> taskList, int index){
+  void getPopUp({
+    required BuildContext context,
+    required String title,
+    required String content,
+    required Function action,
+    required String successToast,
+    required String failToast,
+  }){
     showDialog(context: context, barrierDismissible: true, builder: (context) {
       return AlertDialog.adaptive(
-        title: Text("Delete!!", style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+        title: Text(title, style: Theme.of(context).textTheme.bodyLarge!.copyWith(
             color: Colors.red.shade900,
             fontWeight: FontWeight.w600
         ),),
         backgroundColor: Color(Colours.backGroundColor),
-        content: Text("Do you want to delete the task?", style: Theme.of(context).textTheme.bodySmall!.copyWith(
+        content: Text(content, style: Theme.of(context).textTheme.bodySmall!.copyWith(
           color: Color(Colours.secondaryFontColor),
         ),),
         actions: [
           TextButton(onPressed: () async {
-            Response response = await ApiInstance.getData(Urls.deleteTask(taskList[index].sId!));
+            Response response = await action.call();
             if(response.statusCode == 200){
               setState(() {
                 taskQuery = getTaskByStatus("New");
               });
-              Toast.show(message: "Delete successfully!!", context: context);
+              Toast.show(message: successToast, context: context);
             } else{
-              Toast.show(message: "Delete unsuccessful!!", context: context);
+              Toast.show(message: failToast, context: context);
             }
             Navigator.pop(context);
           }, child: Text("Yes", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
