@@ -149,9 +149,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ),),
                               TaskStatus(
                                 status: taskList[index].status!,
-                                icon: Icons.cached,
-                                backGroundColor: Color(Colours.statusProgressBackGroundColor),
-                                foreGroundColor: Color(Colours.statusProgressForeGroundColor),
+                                icon: SetAccordingToStatus.getIcon(taskList[index].status!),
+                                backGroundColor: SetAccordingToStatus.getBackGroundColor(taskList[index].status!),
+                                foreGroundColor: SetAccordingToStatus.getForeGroundColor(taskList[index].status!),
                               )
                             ],
                           ),
@@ -347,5 +347,45 @@ class TaskStatus extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+// set background, icon according to status
+class SetAccordingToStatus{
+
+  // get icon
+  static IconData getIcon(String status){
+    if(status.contains("New")){
+      return Icons.note_alt;
+    } else if(status.contains("Progress")){
+      return Icons.cached;
+    } else if(status.contains("Canceled")){
+      return Icons.cancel_presentation;
+    }
+    return Icons.task_alt;
+  }
+
+  // get background color
+  static Color getBackGroundColor(String status){
+    if(status.contains("New")){
+      return Colors.blue.shade50;
+    } else if(status.contains("Progress")){
+      return Color(Colours.statusProgressBackGroundColor);
+    } else if(status.contains("Canceled")){
+      return Colors.red.shade50;
+    }
+    return Colors.green.shade50;
+  }
+
+  // get background color
+  static Color getForeGroundColor(String status){
+    if(status.contains("New")){
+      return Colors.blue.shade800;
+    } else if(status.contains("Progress")){
+      return Color(Colours.statusProgressForeGroundColor);
+    } else if(status.contains("Canceled")){
+      return Colors.red.shade800;
+    }
+    return Colors.green.shade800;
   }
 }
