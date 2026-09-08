@@ -65,26 +65,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   TaskStatus(
                     icon: Icons.note_alt,
                     status: "New(12)",
-                    foreGroundColor: Color(Colours.secondaryFontColor),
-                    backGroundColor: Color(Colours.backGroundColor),
+                    foreGroundColor: Colors.blue.shade800,
+                    backGroundColor: Colors.blue.shade50,
                   ),
                   TaskStatus(
                     icon: Icons.cached,
                     status: "In Progress(3)",
-                    foreGroundColor: Color(Colours.secondaryFontColor),
-                    backGroundColor: Color(Colours.backGroundColor),
-                  ),
-                  TaskStatus(
-                    icon: Icons.cancel_presentation,
-                    status: "Canceled(2)",
-                    foreGroundColor: Color(Colours.secondaryFontColor),
-                    backGroundColor: Color(Colours.backGroundColor),
+                    foreGroundColor: Color(Colours.statusProgressForeGroundColor),
+                    backGroundColor: Color(Colours.statusProgressBackGroundColor),
                   ),
                   TaskStatus(
                     icon: Icons.task_alt,
                     status: "Completed(20)",
-                    foreGroundColor: Color(Colours.secondaryFontColor),
-                    backGroundColor: Color(Colours.backGroundColor),
+                    foreGroundColor: Colors.green.shade800,
+                    backGroundColor: Colors.green.shade50,
+                  ),
+                  TaskStatus(
+                    icon: Icons.cancel_presentation,
+                    status: "Canceled(2)",
+                    foreGroundColor: Colors.red.shade800,
+                    backGroundColor: Colors.red.shade50,
                   ),
                 ],
               ),
@@ -323,7 +323,9 @@ class TaskStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () { },
+      onTap: () {
+
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
         decoration: BoxDecoration(
