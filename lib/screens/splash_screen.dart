@@ -21,12 +21,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future loadNextScreen() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String token = pref.getString("token") ?? "";
+    String? token = pref.getString("token");
     // when app closes the userToken become null in authController
     // so we have to get the token and store it in userToken for further api operation
     AuthController.userToken = token;
     await Future.delayed(Duration(seconds: 3), () {
-      if(token.isEmpty){
+      if(token == null || token.isEmpty){
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen(),));
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
