@@ -64,7 +64,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 });
                 if(response.statusCode == 200 || response.statusCode == 201){
                   Toast.show(message: "Task creation successfully", context: context);
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 } else{
                   Toast.show(message: "Task creation failed", context: context);
                 }

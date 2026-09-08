@@ -198,9 +198,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(onPressed: () {
+      floatingActionButton: FloatingActionButton(onPressed: () async{
         // go to the add new task screen
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
+        final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
+        if(result == true){
+          setState(() {
+            taskQuery = getTaskByStatus("New");
+          });
+        }
       }, 
         backgroundColor: Color(Colours.buttonColor),
         child: Icon(Icons.add_task, color: Colors.black,),
