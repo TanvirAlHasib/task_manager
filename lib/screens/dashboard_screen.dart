@@ -6,6 +6,7 @@ import 'package:task_manager/models/task_model.dart';
 import 'package:task_manager/screens/add_task_screen.dart';
 import 'package:task_manager/utils/colours.dart';
 import 'package:task_manager/utils/urls.dart';
+import 'package:task_manager/widgets/filledButtonWidget.dart';
 import 'package:task_manager/widgets/toast.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late Future<List<Data>> taskQuery;
+  final List<String> statusList = ["New", "Progress", "Completed", "Canceled"];
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -191,7 +194,75 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   icon: Icon(Icons.delete)
                               ),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    //changing to menu entries
+                                    final List<DropdownMenuEntry<String>> statusEntries = statusList.map((status) {
+                                      return DropdownMenuEntry<String>(
+                                        value: status,
+                                        label: status,
+                                        style: ButtonStyle(
+                                          foregroundColor: WidgetStatePropertyAll(
+                                            Colors.white,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList();
+
+                                    String ? selectedStatus = statusList.first;
+
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isDismissible: true,
+                                      isScrollControlled: true,
+                                      elevation: 2,
+                                      builder: (context) {
+                                        return Container(
+                                          width: double.infinity,
+                                          height: MediaQuery.of(context).size.height * 0.5 + MediaQuery.of(context).viewInsets.bottom,
+                                          padding: const EdgeInsets.all(20),
+                                          decoration: BoxDecoration(
+                                            color: Color(Colours.cardColor),
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                                          ),
+                                          child: Form(
+                                            child: Column(
+                                              children: [
+                                                Text("Update Task Status", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                                  color: Color(Colours.fontColor),
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600
+                                                ),),
+                                                const SizedBox(
+                                                  height: 18,
+                                                ),
+                                                DropdownMenu(
+                                                  width: double.infinity,
+                                                  keyboardType: TextInputType.text,
+                                                  initialSelection: statusList.first,
+                                                  menuStyle: MenuStyle(
+                                                    backgroundColor: WidgetStatePropertyAll(Color(Colours.cardColor))
+                                                  ),
+                                                  textStyle: TextStyle(
+                                                    color: Color(Colours.fontColor)
+                                                  ),
+                                                  enableSearch: true,
+                                                  dropdownMenuEntries: statusEntries,
+                                                  onSelected: (value) {
+                                                    setState(() {
+                                                      selectedStatus = value;
+                                                    });
+                                                  },
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                FilledButtonWidget(formKey: _formKey, buttonText: "Confirm"),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                    },);
+                                  },
                                   style: IconButton.styleFrom(
                                       foregroundColor: Colors.green.shade800
                                   ),
