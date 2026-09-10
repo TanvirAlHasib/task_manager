@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:task_manager/screens/dashboard_screen.dart';
+import 'package:task_manager/screens/home_screen.dart';
 import '../api/ApiInstance.dart';
 import '../utils/colours.dart';
 import '../utils/urls.dart';
@@ -116,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Toast.show(message: "Profile update successful!!", context: context);
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => DashboardScreen(),),
+                    MaterialPageRoute(builder: (context) => HomeScreen(),),
                     (route) => false,
                   );
                 } else {
