@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:task_manager/api/ApiInstance.dart';
+import 'package:task_manager/models/TaskCountModel.dart';
 import 'package:task_manager/models/task_model.dart';
 import 'package:task_manager/screens/add_task_screen.dart';
 import 'package:task_manager/utils/colours.dart';
@@ -20,13 +21,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late Future<List<Data>> taskQuery;
   final List<String> statusList = ["New", "Progress", "Completed", "Canceled"];
   final _formKey = GlobalKey<FormState>();
+  final List<TaskCountModel> taskCountList = [];
 
   @override
   void initState() {
     super.initState();
     taskQuery = getTaskByStatus("New");
+    getTaskStatusCount();
   }
 
+  //get task by status
   Future<List<Data>> getTaskByStatus(String status) async{
     Response response = await ApiInstance.getData(Urls.listTaskByStatus(status));
     final List<Data> tasks = [];
@@ -41,6 +45,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
       Toast.show(message: "Error fetching task!!", context: context);
     }
     return tasks;
+  }
+
+  //get task count
+  Future<void> getTaskStatusCount() async{
+    Response response = await ApiInstance.getData(Urls.taskStatusCountUrl);
+    taskCountList.clear();
+    if(response.statusCode == 200 || response.statusCode == 201){
+      final mapResponse = jsonDecode(response.body);
+      for(Map<String, dynamic> data in mapResponse["data"]){
+        taskCountList.add(TaskCountModel.fromJson(data));
+      }
+    } else if(response.statusCode == 429){
+      Toast.show(message: "Too many request wait a little bit!!", context: context);
+    }else {
+      Toast.show(message: "Error fetching task count!!", context: context);
+    }
   }
 
   @override
@@ -287,6 +307,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                       Toast.show(message: "Status updated successfully!!", context: context);
                                                       setState(() {
                                                         taskQuery = getTaskByStatus(selectedStatus!);
+                                                        getTaskStatusCount();
                                                       });
                                                     } else{
                                                       Toast.show(message: "Selected same status", context: context);
