@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../api/ApiInstance.dart';
@@ -23,6 +25,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController passTextEditingController = TextEditingController();
   final TextEditingController phoneTextEditingController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  
+  @override
+  void initState() {
+    getProfileDetails();
+    super.initState();
+  }
+  
+  // get profile details
+  void getProfileDetails() async{
+    Response response = await ApiInstance.getData(Urls.profileDetailsUrl);
+    if(response.statusCode == 200){
+      final mapData = jsonDecode(response.body);
+      emailTextEditingController.text = mapData["data"]["email"];
+      firstNameTextEditingController.text = mapData["data"]["firstName"];
+      lastNameTextEditingController.text = mapData["data"]["lastName"];
+      phoneTextEditingController.text = mapData["data"]["mobile"];
+      passTextEditingController.text = mapData["data"]["password"];
+    }
+    Toast.show(message: "Something went wrong!!", context: context);
+  }
 
   @override
   Widget build(BuildContext context) {
