@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:task_manager/api/ApiInstance.dart';
-import 'package:task_manager/models/TaskCountModel.dart';
 import 'package:task_manager/models/task_model.dart';
 import 'package:task_manager/screens/add_task_screen.dart';
 import 'package:task_manager/utils/colours.dart';
@@ -21,7 +20,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late Future<List<Data>> taskQuery;
   final List<String> statusList = ["New", "Progress", "Completed", "Canceled"];
   final _formKey = GlobalKey<FormState>();
-  final List<TaskCountModel> taskCountList = [];
+  final List<int> taskStatusCount = [0, 0, 0, 0];
 
   @override
   void initState() {
@@ -50,12 +49,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   //get task count
   Future<void> getTaskStatusCount() async{
     Response response = await ApiInstance.getData(Urls.taskStatusCountUrl);
-    taskCountList.clear();
     if(response.statusCode == 200 || response.statusCode == 201){
       final mapResponse = jsonDecode(response.body);
+      int newCount = 0;
+      int progressCount = 0;
+      int completedCount = 0;
+      int canceledCount = 0;
       for(Map<String, dynamic> data in mapResponse["data"]){
-        taskCountList.add(TaskCountModel.fromJson(data));
+        if(data["_id"] == "New"){
+          newCount = data["sum"];
+        } else if(data["_id"] == "Progress"){
+          progressCount = data["sum"];
+        } else if(data["_id"] == "Completed"){
+          completedCount = data["sum"];
+        } else{
+          canceledCount = data["sum"];
+        }
       }
+      setState(() {
+        taskStatusCount[0] = newCount;
+        taskStatusCount[1] = progressCount;
+        taskStatusCount[2] = completedCount;
+        taskStatusCount[3] = canceledCount;
+      });
     } else if(response.statusCode == 429){
       Toast.show(message: "Too many request wait a little bit!!", context: context);
     }else {
@@ -87,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 children: [
                   TaskStatus(
                     icon: Icons.note_alt,
-                    status: "New(12)",
+                    status: "New(${taskStatusCount[0]})",
                     foreGroundColor: Colors.blue.shade800,
                     backGroundColor: Colors.blue.shade50,
                     action: () {
@@ -98,7 +114,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   TaskStatus(
                     icon: Icons.cached,
-                    status: "In Progress(3)",
+                    status: "In Progress(${taskStatusCount[1]})",
                     foreGroundColor: Color(Colours.statusProgressForeGroundColor),
                     backGroundColor: Color(Colours.statusProgressBackGroundColor),
                     action: () {
@@ -109,7 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   TaskStatus(
                     icon: Icons.task_alt,
-                    status: "Completed(20)",
+                    status: "Completed(${taskStatusCount[2]})",
                     foreGroundColor: Colors.green.shade800,
                     backGroundColor: Colors.green.shade50,
                     action: () {
@@ -120,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   TaskStatus(
                     icon: Icons.cancel_presentation,
-                    status: "Canceled(2)",
+                    status: "Canceled(${taskStatusCount[3]})",
                     foreGroundColor: Colors.red.shade800,
                     backGroundColor: Colors.red.shade50,
                     action: () {
@@ -305,9 +321,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     final mapResponse = jsonDecode(response.body);
                                                     if(mapResponse["data"]["modifiedCount"] == 1){
                                                       Toast.show(message: "Status updated successfully!!", context: context);
+                                                      await getTaskStatusCount();
                                                       setState(() {
                                                         taskQuery = getTaskByStatus(selectedStatus!);
-                                                        getTaskStatusCount();
                                                       });
                                                     } else{
                                                       Toast.show(message: "Selected same status", context: context);
