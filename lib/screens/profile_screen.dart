@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../api/ApiInstance.dart';
@@ -37,11 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Response response = await ApiInstance.getData(Urls.profileDetailsUrl);
     if(response.statusCode == 200){
       final mapData = jsonDecode(response.body);
-      emailTextEditingController.text = mapData["data"]["email"];
-      firstNameTextEditingController.text = mapData["data"]["firstName"];
-      lastNameTextEditingController.text = mapData["data"]["lastName"];
-      phoneTextEditingController.text = mapData["data"]["mobile"];
-      passTextEditingController.text = mapData["data"]["password"];
+      emailTextEditingController.text = mapData["data"][0]["email"];
+      firstNameTextEditingController.text = mapData["data"][0]["firstName"];
+      lastNameTextEditingController.text = mapData["data"][0]["lastName"];
+      phoneTextEditingController.text = mapData["data"][0]["mobile"];
+      passTextEditingController.text = mapData["data"][0]["password"];
+      return;
     }
     Toast.show(message: "Something went wrong!!", context: context);
   }
