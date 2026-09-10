@@ -70,24 +70,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     status: "New(12)",
                     foreGroundColor: Colors.blue.shade800,
                     backGroundColor: Colors.blue.shade50,
+                    action: () {
+                      setState(() {
+                        taskQuery = getTaskByStatus("New");
+                      });
+                    },
                   ),
                   TaskStatus(
                     icon: Icons.cached,
                     status: "In Progress(3)",
                     foreGroundColor: Color(Colours.statusProgressForeGroundColor),
                     backGroundColor: Color(Colours.statusProgressBackGroundColor),
+                    action: () {
+                      setState(() {
+                        taskQuery = getTaskByStatus("Progress");
+                      });
+                    },
                   ),
                   TaskStatus(
                     icon: Icons.task_alt,
                     status: "Completed(20)",
                     foreGroundColor: Colors.green.shade800,
                     backGroundColor: Colors.green.shade50,
+                    action: () {
+                      setState(() {
+                        taskQuery = getTaskByStatus("Completed");
+                      });
+                    },
                   ),
                   TaskStatus(
                     icon: Icons.cancel_presentation,
                     status: "Canceled(2)",
                     foreGroundColor: Colors.red.shade800,
                     backGroundColor: Colors.red.shade50,
+                    action: () {
+                      setState(() {
+                        taskQuery = getTaskByStatus("Canceled");
+                      });
+                    },
                   ),
                 ],
               ),
@@ -401,19 +421,23 @@ class TaskStatus extends StatelessWidget {
     required this.status,
     required this.icon,
     required this.backGroundColor,
-    required this.foreGroundColor
+    required this.foreGroundColor,
+    this.action
   });
 
   final String status;
   final IconData icon;
   final Color backGroundColor;
   final Color foreGroundColor;
+  final Function? action;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-
+        if(action != null){
+          action?.call();
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
