@@ -225,6 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
                                           ),
                                           child: Form(
+                                            key: _formKey,
                                             child: Column(
                                               children: [
                                                 Text("Update Task Status", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
@@ -256,7 +257,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 const SizedBox(
                                                   height: 20,
                                                 ),
-                                                FilledButtonWidget(formKey: _formKey, buttonText: "Confirm"),
+                                                FilledButtonWidget(formKey: _formKey, buttonText: "Confirm", action: () async {
+                                                  // here api operation
+                                                  Response response = await ApiInstance.getData(Urls.updateTaskStatus(taskList[index].sId!, selectedStatus!));
+                                                  Navigator.pop(context);
+                                                  if(response.statusCode == 200){
+                                                    final mapResponse = jsonDecode(response.body);
+                                                    if(mapResponse["data"]["modifiedCount"] == 1){
+                                                      Toast.show(message: "Status updated successfully!!", context: context);
+                                                      setState(() {
+                                                        taskQuery = getTaskByStatus(selectedStatus!);
+                                                      });
+                                                    } else{
+                                                      Toast.show(message: "Selected same status", context: context);
+                                                    }
+                                                  } else{
+                                                    Toast.show(message: "Something went wrong!!", context: context);
+                                                  }
+                                                },),
                                               ],
                                             ),
                                           ),
