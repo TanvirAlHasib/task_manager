@@ -359,6 +359,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         // go to the add new task screen
         final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
         if(result == true){
+          await getTaskStatusCount();
           setState(() {
             taskQuery = getTaskByStatus("New");
           });
