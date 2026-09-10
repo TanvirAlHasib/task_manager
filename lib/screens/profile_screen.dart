@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:task_manager/screens/dashboard_screen.dart';
 import '../api/ApiInstance.dart';
 import '../utils/colours.dart';
 import '../utils/urls.dart';
@@ -104,8 +105,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 30,
               ),
               FilledButtonWidget(formKey: _formKey, buttonText: "Update Profile", action: () async{
-                // action will be here
-
+                // api action
+                Response response = await ApiInstance.postData(Urls.profileUpdateUrl, {
+                  "email": emailTextEditingController.text,
+                  "firstName": firstNameTextEditingController.text,
+                  "lastName": lastNameTextEditingController.text,
+                  "mobile": phoneTextEditingController.text,
+                  "password": passTextEditingController.text
+                });
+                if(response.statusCode == 200 || response.statusCode == 201) {
+                  Toast.show(message: "Profile update successful!!", context: context);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => DashboardScreen(),),
+                    (route) => false,
+                  );
+                } else {
+                  Toast.show(message: "Profile update unsuccessful!!", context: context);
+                }
               },),
               Spacer(flex: 4,)
             ],
