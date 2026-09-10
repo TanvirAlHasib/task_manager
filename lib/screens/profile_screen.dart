@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart';
+import '../api/ApiInstance.dart';
 import '../utils/colours.dart';
+import '../utils/urls.dart';
+import '../utils/validatorName.dart';
+import '../widgets/Text_form_field.dart';
+import '../widgets/filledButtonWidget.dart';
+import '../widgets/toast.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -10,10 +16,80 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+  final TextEditingController emailTextEditingController = TextEditingController();
+  final TextEditingController firstNameTextEditingController = TextEditingController();
+  final TextEditingController lastNameTextEditingController = TextEditingController();
+  final TextEditingController passTextEditingController = TextEditingController();
+  final TextEditingController phoneTextEditingController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(Colours.cardColor),
       appBar: myAppBar(),
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Spacer(),
+              Text("Update Profile", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                color: Color(Colours.fontColor),
+                fontWeight: FontWeight.w600,
+              ),),
+              const SizedBox(
+                height: 20,
+              ),
+              Text_form_field(labelText: "Email",
+                textInputType: TextInputType.emailAddress,
+                textEditingController: emailTextEditingController,
+                validationFor: Validatorname.email,),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                spacing: 8,
+                children: [
+                  Expanded(child: Text_form_field(labelText: "First Name",
+                    textInputType: TextInputType.text,
+                    textEditingController: firstNameTextEditingController,
+                    validationFor: Validatorname.name,)),
+                  Expanded(child: Text_form_field(labelText: "Last Name",
+                    textInputType: TextInputType.text,
+                    textEditingController: lastNameTextEditingController,
+                    validationFor: Validatorname.name,)),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text_form_field(labelText: "Phone",
+                textInputType: TextInputType.phone,
+                textEditingController: phoneTextEditingController,
+                validationFor: Validatorname.mobile,),
+              const SizedBox(
+                height: 10,
+              ),
+              Text_form_field(labelText: "Password",
+                textInputType: TextInputType.visiblePassword,
+                textEditingController: passTextEditingController,
+                validationFor: Validatorname.pass,),
+              const SizedBox(
+                height: 30,
+              ),
+              FilledButtonWidget(formKey: _formKey, buttonText: "Update Profile", action: () async{
+                // action will be here
+
+              },),
+              Spacer(flex: 4,)
+            ],
+          ),
+        ),
+      ),
     );
   }
 
