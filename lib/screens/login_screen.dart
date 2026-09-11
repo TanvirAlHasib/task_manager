@@ -33,131 +33,133 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Color(Colours.backGroundColor),
       body: SafeArea(
-        child: Container(
-          width: double.maxFinite,
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadiusGeometry.circular(120),
-                child: Image.asset("lib/assets/logo/logo_starDust.png", height: 120,)
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text("Task Manager", style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                color: Color(Colours.fontColor),
-                fontWeight: FontWeight.w600
-              )),
-              const SizedBox(
-                height: 6,
-              ),
-              Text("Navigate your Task universe", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Color(Colours.fontColor),
-              )),
-              const SizedBox(
-                height: 30,
-              ),
-
-              // start here input part
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-                decoration: BoxDecoration(
-                  color: Color(Colours.cardColor),
-                  borderRadius: BorderRadius.circular(12)
+        child: SingleChildScrollView(
+          child: Container(
+            width: double.maxFinite,
+            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 15) + EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(120),
+                  child: Image.asset("lib/assets/logo/logo_starDust.png", height: 120,)
                 ),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Text("Sign In", style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Color(Colours.fontColor)
-                      ),),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text_form_field(labelText: "Email", textInputType: TextInputType.emailAddress, textEditingController: emailTextEditingController, validationFor: Validatorname.email,),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Text_form_field(labelText: "password", textInputType: TextInputType.text, textEditingController: passTextEditingController, validationFor: Validatorname.pass,),
-                      const SizedBox(
-                        height: 35,
-                      ),
-                      FilledButtonWidget(formKey: _formKey, buttonText: "Sign in", action: () async{
-                        if(_formKey.currentState!.validate()){
-                          //getting response
-                          Response response = await ApiInstance.postData(Urls.loginUrl, {
-                            "email": emailTextEditingController.text,
-                            "password": passTextEditingController.text
-                          });
+                const SizedBox(
+                  height: 20,
+                ),
+                Text("Task Manager", style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                  color: Color(Colours.fontColor),
+                  fontWeight: FontWeight.w600
+                )),
+                const SizedBox(
+                  height: 6,
+                ),
+                Text("Navigate your Task universe", style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: Color(Colours.fontColor),
+                )),
+                const SizedBox(
+                  height: 30,
+                ),
 
-                          if (response.statusCode == 200 || response.statusCode == 201) {
-                            final data = jsonDecode(response.body);
-                            await AuthController.saveUserData(data["token"], data["data"]);
-                            Toast.show(message: "Log in successful", context: context);
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
-                          } else {
-                            Toast.show(message: "Log in unsuccessful!!", context: context);
-                          }
-                        }
-                      },),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      RichText(text: TextSpan(
-                        text: "Forget password ?",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Color(Colours.fontColor),
+                // start here input part
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                  decoration: BoxDecoration(
+                    color: Color(Colours.cardColor),
+                    borderRadius: BorderRadius.circular(12)
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Text("Sign In", style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Color(Colours.fontColor)
+                        ),),
+                        const SizedBox(
+                          height: 20,
                         ),
-                        children: [
-                          WidgetSpan(child: SizedBox(width: 5,)),
-                          TextSpan(
-                            text: "Click here..",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              decorationColor: Color(Colours.fontColor),
-                              decorationThickness: 1,
-                              decoration: TextDecoration.underline
-                            ),
-                            recognizer: TapGestureRecognizer()..onTap = (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => EmailAddressScreen(),));
+                        Text_form_field(labelText: "Email", textInputType: TextInputType.emailAddress, textEditingController: emailTextEditingController, validationFor: Validatorname.email,),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text_form_field(labelText: "password", textInputType: TextInputType.text, textEditingController: passTextEditingController, validationFor: Validatorname.pass,),
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        FilledButtonWidget(formKey: _formKey, buttonText: "Sign in", action: () async{
+                          if(_formKey.currentState!.validate()){
+                            //getting response
+                            Response response = await ApiInstance.postData(Urls.loginUrl, {
+                              "email": emailTextEditingController.text,
+                              "password": passTextEditingController.text
+                            });
+
+                            if (response.statusCode == 200 || response.statusCode == 201) {
+                              final data = jsonDecode(response.body);
+                              await AuthController.saveUserData(data["token"], data["data"]);
+                              Toast.show(message: "Log in successful", context: context);
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashboardScreen(),));
+                            } else {
+                              Toast.show(message: "Log in unsuccessful!!", context: context);
                             }
-                          )
-                        ]
-                      )),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Text("or", style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Color(Colours.fontColor)
-                      ),),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      RichText(text: TextSpan(
-                          text: "Don't have account ?",
+                          }
+                        },),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        RichText(text: TextSpan(
+                          text: "Forget password ?",
                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             color: Color(Colours.fontColor),
                           ),
                           children: [
                             WidgetSpan(child: SizedBox(width: 5,)),
                             TextSpan(
-                                text: "Sign up",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                ),
-                                recognizer: TapGestureRecognizer()..onTap = (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen(),));
-                                }
+                              text: "Click here..",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                decorationColor: Color(Colours.fontColor),
+                                decorationThickness: 1,
+                                decoration: TextDecoration.underline
+                              ),
+                              recognizer: TapGestureRecognizer()..onTap = (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => EmailAddressScreen(),));
+                              }
                             )
                           ]
-                      )),
-                    ],
+                        )),
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        Text("or", style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Color(Colours.fontColor)
+                        ),),
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        RichText(text: TextSpan(
+                            text: "Don't have account ?",
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: Color(Colours.fontColor),
+                            ),
+                            children: [
+                              WidgetSpan(child: SizedBox(width: 5,)),
+                              TextSpan(
+                                  text: "Sign up",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                  ),
+                                  recognizer: TapGestureRecognizer()..onTap = (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen(),));
+                                  }
+                              )
+                            ]
+                        )),
+                      ],
+                    ),
                   ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
         ),
       ),
