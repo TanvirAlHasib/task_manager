@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/screens/dashboard_screen.dart';
 import 'package:task_manager/screens/profile_screen.dart';
 import '../utils/colours.dart';
+import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,8 +13,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  final List<Widget> screenList = [DashboardScreen(), ProfileScreen()];
+  late final List<Widget> screenList;
+  final GlobalKey<DashboardScreenState> _dashBoardScreenState = GlobalKey<DashboardScreenState>();
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    screenList = [DashboardScreen(key: _dashBoardScreenState,), const ProfileScreen()];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +69,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+        floatingActionButton: currentIndex == 0 ? FloatingActionButton(onPressed: () async{
+          // go to the add new task screen
+          final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
+          if(result == true){
+            _dashBoardScreenState.currentState?.refresh();
+          }
+        },
+          backgroundColor: Color(Colours.buttonColor),
+          child: Icon(Icons.add_task, color: Colors.black,),
+        ) : null
       ),
     );
   }

@@ -49,83 +49,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(Colours.cardColor),
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Spacer(),
-              Text("Update Profile", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: Color(Colours.fontColor),
-                fontWeight: FontWeight.w600,
-              ),),
-              const SizedBox(
-                height: 20,
-              ),
-              Text_form_field(labelText: "Email",
-                textInputType: TextInputType.emailAddress,
-                textEditingController: emailTextEditingController,
-                validationFor: Validatorname.email,),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                spacing: 8,
-                children: [
-                  Expanded(child: Text_form_field(labelText: "First Name",
-                    textInputType: TextInputType.text,
-                    textEditingController: firstNameTextEditingController,
-                    validationFor: Validatorname.name,)),
-                  Expanded(child: Text_form_field(labelText: "Last Name",
-                    textInputType: TextInputType.text,
-                    textEditingController: lastNameTextEditingController,
-                    validationFor: Validatorname.name,)),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text_form_field(labelText: "Phone",
-                textInputType: TextInputType.phone,
-                textEditingController: phoneTextEditingController,
-                validationFor: Validatorname.mobile,),
-              const SizedBox(
-                height: 10,
-              ),
-              Text_form_field(labelText: "Password",
-                textInputType: TextInputType.visiblePassword,
-                textEditingController: passTextEditingController,
-                validationFor: Validatorname.pass,),
-              const SizedBox(
-                height: 30,
-              ),
-              FilledButtonWidget(formKey: _formKey, buttonText: "Update Profile", action: () async{
-                // api action
-                Response response = await ApiInstance.postData(Urls.profileUpdateUrl, {
-                  "email": emailTextEditingController.text,
-                  "firstName": firstNameTextEditingController.text,
-                  "lastName": lastNameTextEditingController.text,
-                  "mobile": phoneTextEditingController.text,
-                  "password": passTextEditingController.text
-                });
-                if(response.statusCode == 200 || response.statusCode == 201) {
-                  Toast.show(message: "Profile update successful!!", context: context);
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen(),),
-                    (route) => false,
-                  );
-                } else {
-                  Toast.show(message: "Profile update unsuccessful!!", context: context);
-                }
-              },),
-              Spacer(flex: 4,)
-            ],
-          ),
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Color(Colours.cardColor),
+      ),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            Spacer(),
+            Text("Update Profile", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+              color: Color(Colours.fontColor),
+              fontWeight: FontWeight.w600,
+            ),),
+            const SizedBox(
+              height: 20,
+            ),
+            Text_form_field(labelText: "Email",
+              textInputType: TextInputType.emailAddress,
+              textEditingController: emailTextEditingController,
+              validationFor: Validatorname.email,),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              spacing: 8,
+              children: [
+                Expanded(child: Text_form_field(labelText: "First Name",
+                  textInputType: TextInputType.text,
+                  textEditingController: firstNameTextEditingController,
+                  validationFor: Validatorname.name,)),
+                Expanded(child: Text_form_field(labelText: "Last Name",
+                  textInputType: TextInputType.text,
+                  textEditingController: lastNameTextEditingController,
+                  validationFor: Validatorname.name,)),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text_form_field(labelText: "Phone",
+              textInputType: TextInputType.phone,
+              textEditingController: phoneTextEditingController,
+              validationFor: Validatorname.mobile,),
+            const SizedBox(
+              height: 10,
+            ),
+            Text_form_field(labelText: "Password",
+              textInputType: TextInputType.visiblePassword,
+              textEditingController: passTextEditingController,
+              validationFor: Validatorname.pass,),
+            const SizedBox(
+              height: 30,
+            ),
+            FilledButtonWidget(formKey: _formKey, buttonText: "Update Profile", action: () async{
+              // api action
+              Response response = await ApiInstance.postData(Urls.profileUpdateUrl, {
+                "email": emailTextEditingController.text,
+                "firstName": firstNameTextEditingController.text,
+                "lastName": lastNameTextEditingController.text,
+                "mobile": phoneTextEditingController.text,
+                "password": passTextEditingController.text
+              });
+              if(response.statusCode == 200 || response.statusCode == 201) {
+                Toast.show(message: "Profile update successful!!", context: context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen(),),
+                      (route) => false,
+                );
+              } else {
+                Toast.show(message: "Profile update unsuccessful!!", context: context);
+              }
+            },),
+            Spacer(flex: 4,)
+          ],
         ),
       ),
     );

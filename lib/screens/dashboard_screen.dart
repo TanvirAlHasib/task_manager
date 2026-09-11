@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:task_manager/api/ApiInstance.dart';
 import 'package:task_manager/models/task_model.dart';
-import 'package:task_manager/screens/add_task_screen.dart';
 import 'package:task_manager/utils/colours.dart';
 import 'package:task_manager/utils/urls.dart';
 import 'package:task_manager/widgets/filledButtonWidget.dart';
@@ -13,10 +12,10 @@ class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  State<DashboardScreen> createState() => DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class DashboardScreenState extends State<DashboardScreen> {
   late Future<List<Data>> taskQuery;
   final List<String> statusList = ["New", "Progress", "Completed", "Canceled"];
   final _formKey = GlobalKey<FormState>();
@@ -81,84 +80,85 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(Colours.cardColor),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: .start,
-          children: [
-            Text("Overview", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      decoration: BoxDecoration(
+        color: Color(Colours.cardColor),
+      ),
+      child: Column(
+        crossAxisAlignment: .start,
+        children: [
+          Text("Overview", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: Color(Colours.fontColor),
               fontWeight: FontWeight.w600
-            ),),
-            const SizedBox(
-              height: 12,
+          ),),
+          const SizedBox(
+            height: 12,
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              spacing: 9,
+              children: [
+                TaskStatus(
+                  icon: Icons.note_alt,
+                  status: "New(${taskStatusCount[0]})",
+                  foreGroundColor: Colors.blue.shade800,
+                  backGroundColor: Colors.blue.shade50,
+                  action: () {
+                    setState(() {
+                      taskQuery = getTaskByStatus("New");
+                    });
+                  },
+                ),
+                TaskStatus(
+                  icon: Icons.cached,
+                  status: "In Progress(${taskStatusCount[1]})",
+                  foreGroundColor: Color(Colours.statusProgressForeGroundColor),
+                  backGroundColor: Color(Colours.statusProgressBackGroundColor),
+                  action: () {
+                    setState(() {
+                      taskQuery = getTaskByStatus("Progress");
+                    });
+                  },
+                ),
+                TaskStatus(
+                  icon: Icons.task_alt,
+                  status: "Completed(${taskStatusCount[2]})",
+                  foreGroundColor: Colors.green.shade800,
+                  backGroundColor: Colors.green.shade50,
+                  action: () {
+                    setState(() {
+                      taskQuery = getTaskByStatus("Completed");
+                    });
+                  },
+                ),
+                TaskStatus(
+                  icon: Icons.cancel_presentation,
+                  status: "Canceled(${taskStatusCount[3]})",
+                  foreGroundColor: Colors.red.shade800,
+                  backGroundColor: Colors.red.shade50,
+                  action: () {
+                    setState(() {
+                      taskQuery = getTaskByStatus("Canceled");
+                    });
+                  },
+                ),
+              ],
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                spacing: 9,
-                children: [
-                  TaskStatus(
-                    icon: Icons.note_alt,
-                    status: "New(${taskStatusCount[0]})",
-                    foreGroundColor: Colors.blue.shade800,
-                    backGroundColor: Colors.blue.shade50,
-                    action: () {
-                      setState(() {
-                        taskQuery = getTaskByStatus("New");
-                      });
-                    },
-                  ),
-                  TaskStatus(
-                    icon: Icons.cached,
-                    status: "In Progress(${taskStatusCount[1]})",
-                    foreGroundColor: Color(Colours.statusProgressForeGroundColor),
-                    backGroundColor: Color(Colours.statusProgressBackGroundColor),
-                    action: () {
-                      setState(() {
-                        taskQuery = getTaskByStatus("Progress");
-                      });
-                    },
-                  ),
-                  TaskStatus(
-                    icon: Icons.task_alt,
-                    status: "Completed(${taskStatusCount[2]})",
-                    foreGroundColor: Colors.green.shade800,
-                    backGroundColor: Colors.green.shade50,
-                    action: () {
-                      setState(() {
-                        taskQuery = getTaskByStatus("Completed");
-                      });
-                    },
-                  ),
-                  TaskStatus(
-                    icon: Icons.cancel_presentation,
-                    status: "Canceled(${taskStatusCount[3]})",
-                    foreGroundColor: Colors.red.shade800,
-                    backGroundColor: Colors.red.shade50,
-                    action: () {
-                      setState(() {
-                        taskQuery = getTaskByStatus("Canceled");
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 17,
-            ),
-            Text("Your Tasks", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+          ),
+          const SizedBox(
+            height: 17,
+          ),
+          Text("Your Tasks", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: Color(Colours.fontColor),
               fontWeight: FontWeight.w600
-            ),),
-            const SizedBox(
-              height: 17,
-            ),
-            Expanded(
-              child: FutureBuilder(future: taskQuery, builder: (context, snapshot) {
+          ),),
+          const SizedBox(
+            height: 17,
+          ),
+          Expanded(
+            child: FutureBuilder(future: taskQuery, builder: (context, snapshot) {
 
                 // if data is loading
                 if(snapshot.connectionState == ConnectionState.waiting){
@@ -175,11 +175,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 // if there is no data or empty
                 if(!snapshot.hasData || snapshot.data!.isEmpty){
                   return Center(
-                      child: Text("No data yet!!", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                          color: Color(Colours.fontColor),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600
-                      ),),);
+                    child: Text("No data yet!!", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: Color(Colours.fontColor),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600
+                    ),),);
                 }
 
                 // if data is available
@@ -284,9 +284,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             child: Column(
                                               children: [
                                                 Text("Update Task Status", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                                  color: Color(Colours.fontColor),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600
+                                                    color: Color(Colours.fontColor),
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600
                                                 ),),
                                                 const SizedBox(
                                                   height: 18,
@@ -296,10 +296,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   keyboardType: TextInputType.text,
                                                   initialSelection: statusList.first,
                                                   menuStyle: MenuStyle(
-                                                    backgroundColor: WidgetStatePropertyAll(Color(Colours.cardColor))
+                                                      backgroundColor: WidgetStatePropertyAll(Color(Colours.cardColor))
                                                   ),
                                                   textStyle: TextStyle(
-                                                    color: Color(Colours.fontColor)
+                                                      color: Color(Colours.fontColor)
                                                   ),
                                                   enableSearch: true,
                                                   dropdownMenuEntries: statusEntries,
@@ -335,7 +335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             ),
                                           ),
                                         );
-                                    },);
+                                      },);
                                   },
                                   style: IconButton.styleFrom(
                                       foregroundColor: Colors.green.shade800
@@ -349,26 +349,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },);
               },)
-            )
-          ],
-        ),
+          )
+        ],
       ),
-
-      floatingActionButton: FloatingActionButton(onPressed: () async{
-        // go to the add new task screen
-        final result = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddTaskScreen(),));
-        if(result == true){
-          await getTaskStatusCount();
-          setState(() {
-            taskQuery = getTaskByStatus("New");
-          });
-        }
-      }, 
-        backgroundColor: Color(Colours.buttonColor),
-        child: Icon(Icons.add_task, color: Colors.black,),
-      ),
-
     );
+  }
+
+  // Method to refresh data from outside
+  Future<void> refresh() async {
+    await getTaskStatusCount();
+    setState(() {
+      taskQuery = getTaskByStatus("New");
+    });
   }
 
   // show dialog
@@ -394,6 +386,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           TextButton(onPressed: () async {
             Response response = await action.call();
             if(response.statusCode == 200){
+              await getTaskStatusCount();
               setState(() {
                 taskQuery = getTaskByStatus("New");
               });
