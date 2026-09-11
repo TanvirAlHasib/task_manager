@@ -429,32 +429,35 @@ class TaskStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if(action != null){
-          action?.call();
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
-        decoration: BoxDecoration(
-          color: backGroundColor,
-          borderRadius: BorderRadiusGeometry.circular(12),
-          border: BoxBorder.all(
-            color: Colors.grey.shade600,
-            strokeAlign: BorderSide.strokeAlignOutside,
-            width: 1
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          if(action != null){
+            action?.call();
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+          decoration: BoxDecoration(
+            color: backGroundColor,
+            borderRadius: BorderRadiusGeometry.circular(12),
+            border: BoxBorder.all(
+              color: Colors.grey.shade600,
+              strokeAlign: BorderSide.strokeAlignOutside,
+              width: 1
+            ),
           ),
-        ),
-        child: Row(
-          spacing: 5,
-          mainAxisSize: .min,
-          children: [
-            Icon(icon, color: foreGroundColor, size: 18,),
-            Text(status, style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: foreGroundColor
-            ),)
-          ],
+          child: Row(
+            spacing: 5,
+            mainAxisSize: .min,
+            children: [
+              Icon(icon, color: foreGroundColor, size: 18,),
+              Text(status, style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: foreGroundColor
+              ),)
+            ],
+          ),
         ),
       ),
     );
