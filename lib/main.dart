@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/screens/splash_screen.dart';
+import 'package:task_manager/utils/notification_helper.dart';
 
 void main() {
+  NotificationHelper.initialize();
   runApp(const MyApp());
 }
 
