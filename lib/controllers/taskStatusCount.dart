@@ -22,7 +22,7 @@ class TaskStatusCount {
       if(newCount > 0 || progressCount > 0){
         await NotificationHelper.showNotification(
           "Task Remainder",
-          "You have $newCount New, $progressCount Progress task"
+          "You have $newCount new, and $progressCount progress task"
         );
       } else {
         await NotificationHelper.showNotification(
@@ -35,6 +35,11 @@ class TaskStatusCount {
 
     }
 
-    return false;
+    await NotificationHelper.showNotification(
+        "Log in",
+        "Log in and plan your task!!"
+    );
+
+    return true;
   }
 }

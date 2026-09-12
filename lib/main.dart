@@ -7,11 +7,11 @@ import 'package:workmanager/workmanager.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationHelper.initialize();
-  await Workmanager().initialize(WorkManager.callbackDispatcher);
+  await Workmanager().initialize(callbackDispatcher);
   await Workmanager().registerPeriodicTask(
     "task-count-notification-job",
     "taskCountNotification",
-    frequency: Duration(minutes: 1)
+    frequency: Duration(minutes: 15)
   );
   runApp(const MyApp());
 }
