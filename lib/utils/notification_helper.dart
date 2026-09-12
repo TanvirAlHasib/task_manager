@@ -20,12 +20,11 @@ class NotificationHelper {
   }
 
   // notification show periodically
-  static Future<void> showNotificationPeriodically(String title, String body) async{
-    await notification.periodicallyShow(
+  static Future<void> showNotification(String title, String body) async{
+    await notification.show(
         id: NotificationConstraints.notificationId,
         title: title,
         body: body,
-        repeatInterval: RepeatInterval.daily,
         notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             NotificationConstraints.channelId,
@@ -35,7 +34,6 @@ class NotificationHelper {
           ),
           iOS: DarwinNotificationDetails()
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle
     );
   }
 
