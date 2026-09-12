@@ -5,7 +5,7 @@ import 'package:task_manager/utils/notification_helper.dart';
 import 'package:task_manager/utils/urls.dart';
 
 class TaskStatusCount {
-  static Future<void> taskStatusCount() async{
+  static Future<bool> taskStatusCount() async{
     Response response = await ApiInstance.getData(Urls.taskStatusCountUrl);
     if(response.statusCode == 200 || response.statusCode == 201){
       final mapResponse = jsonDecode(response.body);
@@ -20,17 +20,21 @@ class TaskStatusCount {
       }
 
       if(newCount > 0 || progressCount > 0){
-        await NotificationHelper.showNotificationPeriodically(
+        await NotificationHelper.showNotification(
           "Task Remainder",
           "You have $newCount New, $progressCount Progress task"
         );
       } else {
-        await NotificationHelper.showNotificationPeriodically(
+        await NotificationHelper.showNotification(
           "Task Remainder",
           "It is time to plan your task!!"
         );
       }
 
+      return true;
+
     }
+
+    return false;
   }
 }
