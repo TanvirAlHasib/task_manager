@@ -11,7 +11,10 @@ void main() async{
   await Workmanager().registerPeriodicTask(
     "task-count-notification-job",
     "taskCountNotification",
-    frequency: Duration(minutes: 15)
+    frequency: Duration(minutes: 15),
+    constraints: Constraints(
+      networkType: NetworkType.connected
+    )
   );
   runApp(const MyApp());
 }
