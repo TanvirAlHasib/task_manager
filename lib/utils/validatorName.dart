@@ -5,4 +5,5 @@ class Validatorname {
   static final String mobile = "mobile";
   static final String name = "name";
   static final String description = "description";
+  static final String title = "title";
 }

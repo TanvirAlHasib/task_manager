@@ -42,7 +42,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               Text_form_field(textEditingController: titleEditingController,
                   labelText: "Task Title",
                   textInputType: TextInputType.text,
-                  validationFor: Validatorname.name
+                  validationFor: Validatorname.title
               ),
               const SizedBox(
                 height: 10,
