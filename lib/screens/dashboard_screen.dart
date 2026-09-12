@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 import 'package:task_manager/api/ApiInstance.dart';
 import 'package:task_manager/models/task_model.dart';
 import 'package:task_manager/utils/colours.dart';
@@ -174,12 +175,15 @@ class DashboardScreenState extends State<DashboardScreen> {
 
                 // if there is no data or empty
                 if(!snapshot.hasData || snapshot.data!.isEmpty){
-                  return Center(
-                    child: Text("No data yet!!", style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        color: Color(Colours.fontColor),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600
-                    ),),);
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: .center,
+                      children: [
+                        Lottie.asset("lib/assets/animations/no_data.json", width: 140),
+                      ],
+                    ),
+                  );
                 }
 
                 // if data is available
