@@ -25,7 +25,8 @@ class NotificationHelper {
             NotificationConstraints.channelName,
             importance: Importance.high,
             priority: Priority.high
-          )
+          ),
+          iOS: DarwinNotificationDetails()
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle
     );
