@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:task_manager/utils/notification_constraints.dart';
 
@@ -10,6 +11,12 @@ class NotificationHelper {
       android: AndroidInitializationSettings("@mipmap/ic_launcher"),
       iOS: DarwinInitializationSettings()
     ));
+    // getting permission
+    if(Platform.isAndroid){
+      await notification.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
+    } else{
+      await notification.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions();
+    }
   }
 
   // notification show periodically
