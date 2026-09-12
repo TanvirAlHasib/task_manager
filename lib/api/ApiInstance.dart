@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_manager/controllers/authController.dart';
 
 class ApiInstance {
   //get request is here
